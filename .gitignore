@@ -1,0 +1,9 @@
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/playwright-html-report/
+/playwright/.cache/
+/package-lock.json/
+/.env/
