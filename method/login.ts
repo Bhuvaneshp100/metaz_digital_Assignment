@@ -3,11 +3,11 @@ import { Page, expect } from '@playwright/test';
 const Login = {
 
     async validateSuccessfulLogin(page: Page): Promise<void> {
-        await page.waitForURL(/dashboard/);
-        await expect(page).toHaveURL(/dashboard/);
+        await page.waitForLoadState('networkidle');
         await expect(page.getByRole('link', { name: 'client brand banner' })).toBeVisible();
         await expect(page.getByRole('link', { name: 'Admin' })).toBeVisible();
         await expect(page.getByRole('textbox', { name: 'Search' })).toBeEmpty();
+        await expect(page).toHaveURL(/dashboard/);
         await page.screenshot({ path: 'screenshots/login_success.png', fullPage: true });
     },
 
@@ -26,7 +26,7 @@ const Login = {
         if (expectedMessage === 'Empty Username') {
             await expect(page.getByRole('textbox', { name: 'Username' })).toBeVisible();
             await expect(page.getByRole('textbox', { name: 'Username' })).toBeEmpty();
-          await expect(page.getByRole('textbox', { name: 'Password' })).not.toHaveValue('');
+            await expect(page.getByRole('textbox', { name: 'Password' })).not.toHaveValue('');
 
         }
         else if (expectedMessage === 'Empty Password') {
@@ -40,8 +40,8 @@ const Login = {
         }
         else {
             await expect(
-            page.getByRole('alert').locator('div').filter({ hasText: 'Invalid credentials' }))
-            .toBeVisible({ timeout: 10000 });
+                page.getByRole('alert').locator('div').filter({ hasText: 'Invalid credentials' }))
+                .toBeVisible({ timeout: 10000 });
             await expect(page.getByRole('alert')).toContainText('Invalid credentials');
             await expect(page.getByRole('alert').locator('i')).toBeVisible();
         }
