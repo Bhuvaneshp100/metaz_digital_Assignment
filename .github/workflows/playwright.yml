@@ -6,6 +6,21 @@ on:
       - master
       - main
   workflow_dispatch:
+    inputs:
+      test_type:
+        description: 'What to test?'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - login
+          - mocking
+          - userTable
+      test_file:
+        description: 'Specific test file (e.g., tests/login.spec.ts)'
+        required: false
+        type: string
 
 jobs:
   test:
@@ -20,8 +35,16 @@ jobs:
       - name: Install dependencies
         run: npm run dependencyInstall
         
-      - name: Run Playwright tests
-        run: npm run test
+      - name: Determine test command
+        id: test-command
+      - run: |
+         if [ "${{ inputs.test_type }}" == "all" ]; then
+          echo "COMMAND=npx playwright test" >> $GITHUB_OUTPUT
+         elif [ "${{ inputs.test_type }}" == "specific-file" ] && [ -n "${{ inputs.test_file }}" ]; then
+          echo "COMMAND=npx playwright test ${{ inputs.test_file }}" >> $GITHUB_OUTPUT
+         else
+          echo "COMMAND=npx playwright test" >> $GITHUB_OUTPUT
+         fi
         env:
           USER_NAME: ${{ secrets.USER_NAME }}
           USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
