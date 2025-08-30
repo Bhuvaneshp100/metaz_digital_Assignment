@@ -1,5 +1,5 @@
 import { Page ,expect} from '@playwright/test';
-import locators from '../locators/locator';
+import locators from '../locators/commonLocator';
 
 const method = {
 
@@ -13,12 +13,10 @@ const method = {
     await locators.login.loginButton(page).click();
   },
 
-//   async  validateDashboard(page: Page) {
-//   const dashboardHeading = page.getByRole('heading', { name: 'Dashboard' });
-//   await expect(dashboardHeading).toBeVisible();
-//   await expect(page.getByRole('banner')).toContainText('Dashboard');
-//   await page.screenshot({ path: 'screenshots/dashboard.png', fullPage: true });
-// },
+
+
+
+
 //  async addUser(page: Page, employeeName: string, username: string, password: string) {
 //    await expect(page).toHaveURL(/.*dashboard/);
 //   await page.locator(locators.addUser.adminLink).click();

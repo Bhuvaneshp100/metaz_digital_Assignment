@@ -1,21 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
-
 import * as dotenv from "dotenv";
+dotenv.config({ quiet: true });  
 
-dotenv.config();
-process.env.DOTENV_CONFIG_SILENT = 'true';
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
 
-/**
- * See https://playwright.dev/docs/test-configuration.
- * 
- */
 export const config = {
   defaultTimeout: 2 * 60 * 1000, // 2 minutes in ms
 };
@@ -30,15 +17,9 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
-    ['list'], // Console reporter
-    ['html', {
-      outputFolder: 'playwright-html-report',
-      open: 'on-failure',
-      host: '0.0.0.0',
-      port: 9323
-    }]
+    ['html', { outputFolder: 'playwright-report', open: 'never' }],
+    ['list'] // console reporter
   ],
-
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
