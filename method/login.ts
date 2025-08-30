@@ -3,10 +3,10 @@ import { Page, expect } from '@playwright/test';
 const Login = {
 
     async validateSuccessfulLogin(page: Page): Promise<void> {
-        await page.waitForLoadState('networkidle');
-        const banner = page.getByRole('link', { name: 'client brand banner' });
-        await banner.waitFor({ state: 'visible', timeout: 10000 }); 
-        await expect(banner).toBeVisible();
+        await Promise.all([
+            page.waitForResponse("**/web/index.php/dashboard/index"),
+            page.waitForLoadState('networkidle'),
+        ]);
         await expect(page.getByRole('link', { name: 'client brand banner' })).toBeVisible();
         await expect(page.getByRole('link', { name: 'Admin' })).toBeVisible();
         await expect(page.getByRole('textbox', { name: 'Search' })).toBeEmpty();

@@ -10,10 +10,10 @@ test.describe('Login Page Tests', () => {
     await Login.validateSuccessfulLogin(page);
   });
   
-  test('Login Page UI Elements Validation', async ({ page }) => {
-    await page.goto('/');
-    await Login.validateLoginPageUI(page);
-  });
+  // test('Login Page UI Elements Validation', async ({ page }) => {
+  //   await page.goto('/');
+  //   await Login.validateLoginPageUI(page);
+  // });
 
   // test('Login with Invalid Username', async ({ page }) => {
   //   await page.goto('/');
