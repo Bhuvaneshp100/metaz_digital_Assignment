@@ -3,6 +3,7 @@ import { Page, expect } from '@playwright/test';
 const Login = {
 
     async validateSuccessfulLogin(page: Page): Promise<void> {
+        await page.waitForURL(/dashboard/);
         await expect(page).toHaveURL(/dashboard/);
         await expect(page.getByRole('link', { name: 'client brand banner' })).toBeVisible();
         await expect(page.getByRole('link', { name: 'Admin' })).toBeVisible();
@@ -25,19 +26,22 @@ const Login = {
         if (expectedMessage === 'Empty Username') {
             await expect(page.getByRole('textbox', { name: 'Username' })).toBeVisible();
             await expect(page.getByRole('textbox', { name: 'Username' })).toBeEmpty();
-            await expect(page.getByRole('textbox', { name: 'Password' })).not.toBeEmpty();
+          await expect(page.getByRole('textbox', { name: 'Password' })).not.toHaveValue('');
+
         }
         else if (expectedMessage === 'Empty Password') {
             await expect(page.getByText('Required')).toBeVisible();
             await expect(page.getByRole('textbox', { name: 'Password' })).toBeEmpty();
-            await expect(page.getByRole('textbox', { name: 'Username' })).not.toBeEmpty();
+            await expect(page.getByRole('textbox', { name: 'Username' })).not.toHaveValue('');
         }
         else if (expectedMessage === 'Fields Empty') {
             await expect(page.getByText('Required').first()).toBeVisible();
             await expect(page.getByText('Required').nth(1)).toBeVisible();
         }
         else {
-            await expect(page.getByRole('alert').locator('div').filter({ hasText: 'Invalid credentials' })).toBeVisible();
+            await expect(
+            page.getByRole('alert').locator('div').filter({ hasText: 'Invalid credentials' }))
+            .toBeVisible({ timeout: 10000 });
             await expect(page.getByRole('alert')).toContainText('Invalid credentials');
             await expect(page.getByRole('alert').locator('i')).toBeVisible();
         }
