@@ -2,52 +2,15 @@ import { Page, expect } from '@playwright/test';
 
 const Login = {
 
-   async validateSuccessfulLogin(page: Page): Promise<void> {
-    console.log('Starting login validation...');
-    console.log('Current URL before wait:', page.url());
-    
-    try {
-        // Wait for dashboard URL
-        await page.waitForURL(/dashboard/, { timeout: 30000 });
-        console.log('✅ Successfully navigated to dashboard');
-        console.log('Current URL after wait:', page.url());
-        
-        // Wait for network to be idle
+    async validateSuccessfulLogin(page: Page): Promise<void> {
         await page.waitForLoadState('networkidle');
-        console.log('✅ Network is idle');
-        
-        // Check visibility of elements
-        console.log('Checking client brand banner...');
+        await page.waitForURL(/dashboard/, { timeout: 30000 });
         await expect(page.getByRole('link', { name: 'client brand banner' })).toBeVisible();
-        console.log('✅ Client brand banner is visible');
-        
-        console.log('Checking Admin link...');
         await expect(page.getByRole('link', { name: 'Admin' })).toBeVisible();
-        console.log('✅ Admin link is visible');
-        
-        console.log('Checking Search textbox is empty...');
         await expect(page.getByRole('textbox', { name: 'Search' })).toBeEmpty();
-        console.log('✅ Search textbox is empty');
-        
-        // Final URL check
-        await expect(page).toHaveURL(/dashboard/);
-        console.log('✅ Final URL validation passed');
-        
-        // Take screenshot
         await page.screenshot({ path: 'screenshots/login_success.png', fullPage: true });
-        console.log('✅ Screenshot taken');
-        
-    } catch (error) {
-        console.log('❌ Login validation failed:', error.message);
-        console.log('Current URL at failure:', page.url());
-        
-        // Take screenshot on failure for debugging
-        await page.screenshot({ path: 'screenshots/login_failure_debug.png', fullPage: true });
-        console.log('📸 Failure screenshot saved');
-        
-        throw error;
-    }
-   },
+    },
+
     async validateLoginPageUI(page: Page): Promise<void> {
         await expect(page.getByText('Username', { exact: true })).toBeVisible();
         await expect(page.getByRole('textbox', { name: 'Username' })).toBeVisible();
