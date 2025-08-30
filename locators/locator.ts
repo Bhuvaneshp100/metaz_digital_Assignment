@@ -1,11 +1,12 @@
-// userLocators.ts
+
 const userLocators = {
   login:{
-     username: (page: any) => page.getByRole('textbox', { name: 'username' }),
+    username: (page: any) => page.getByRole('textbox', { name: 'username' }),
     password: (page: any) => page.getByRole('textbox', { name: 'password' }),
     loginButton: (page: any) => page.getByRole('button', { name: 'Login' }),
   },
- addUser: {
+
+  addUser: {
     adminLink: 'role=link[name="Admin"]',
     addButton: 'role=button[name=" Add"]',
     roleDropdown: 'form i >> nth=0',

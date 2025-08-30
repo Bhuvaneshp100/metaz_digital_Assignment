@@ -14,7 +14,11 @@ process.env.DOTENV_CONFIG_SILENT = 'true';
 
 /**
  * See https://playwright.dev/docs/test-configuration.
+ * 
  */
+export const config = {
+  defaultTimeout: 2 * 60 * 1000, // 2 minutes in ms
+};
 export default defineConfig({
   testDir: './tests',
   fullyParallel: false,
@@ -39,7 +43,7 @@ export default defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: 'https://opensource-demo.orangehrmlive.com/',
-    headless: true,
+    headless: false,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
