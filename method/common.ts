@@ -4,8 +4,9 @@ import locators from '../locators/locator';
 const method = {
 
   async login(page: Page, username?: string, password?: string): Promise<void> {
-    const user = username ?? process.env.USER_NAME!;
-    const pass = password ?? process.env.USER_PASSWORD!;
+    const user = 'Admin'
+    const pass = 'admin123'
+
 
     await page.goto('/');
     await locators.login.username(page).fill(user);
