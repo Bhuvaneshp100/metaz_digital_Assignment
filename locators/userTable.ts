@@ -1,7 +1,7 @@
 const locator = {
 
     addUser: {
-          roleDropdown: (page: any) => page.locator('form i').first(),
+        roleDropdown: (page: any) => page.locator('form i').first(),
         roleOption: (page: any, roleName: string) => page.getByRole('option', { name: roleName }),
         selectedRoleText: (page: any, roleName: string) => page.locator('form').getByText(roleName),
         employeeSearchInput: (page: any) => page.getByRole('textbox', { name: 'Type for hints...' }),
@@ -17,7 +17,7 @@ const locator = {
         saveButton: (page: any) => page.getByRole('button', { name: 'Save' }),
         addButton: (page: any) => page.getByRole('button', { name: ' Add' }),
         usernameValidation: (page: any) => page.getByRole('textbox').nth(2),
-        statusValidation: (page: any) => page.getByText('Enabled')    
+        statusValidation: (page: any) => page.getByText('Enabled')
     },
     systemUsersLocators: {
         adminLink: (page: any) => page.getByRole('link', { name: 'Admin' }),
@@ -34,38 +34,98 @@ const locator = {
         banner: (page: any) => page.getByRole('banner'),
         form: (page: any) => page.locator('form')
     },
-     addUserPageLocators :{
-    addButton: (page: any) => page.getByRole('button', { name: ' Add' }),
-    pageTitle: (page: any) => page.getByRole('heading', { name: 'Add User' }),
-    pageContainer: (page: any) => page.locator('#app'),
-    
-    // Form Fields
-    userRoleLabel: (page: any) => page.getByText('User Role'),
-    userRoleDropdown: (page: any) => page.locator('.oxd-select-text').first(),
-    userRoleIcon: (page: any) => page.locator('form i').first(),
-    
-    employeeNameLabel: (page: any) => page.getByText('Employee Name'),
-    employeeNameDiv: (page: any) => page.locator('div').filter({ hasText: /^Employee Name$/ }).nth(2),
-    employeeSearchInput: (page: any) => page.getByRole('textbox', { name: 'Type for hints...' }),
-    
-    statusLabel: (page: any) => page.getByText('Status'),
-    
-    usernameLabel: (page: any) => page.getByText('Username'),
-    usernameInput: (page: any) => page.getByRole('textbox').nth(2),
-    
-    passwordLabel: (page: any) => page.getByText('Password', { exact: true }),
-    passwordInput: (page: any) => page.getByRole('textbox').nth(3),
-    
-    confirmPasswordLabel: (page: any) => page.getByText('Confirm Password'),
-    confirmPasswordInput: (page: any) => page.getByRole('textbox').nth(4),
-    
-    passwordHelpText: (page: any) => page.getByText('For a strong password, please'),
-    passwordHelpFullText: (page: any) => page.locator('form'),
-    requiredText: (page: any) => page.getByText('* Required'),
-    
-    // Buttons
-    cancelButton: (page: any) => page.getByRole('button', { name: 'Cancel' }),
-    saveButton: (page: any) => page.getByRole('button', { name: 'Save' })
-}
+    addUserPageLocators: {
+        addButton: (page: any) => page.getByRole('button', { name: ' Add' }),
+        pageTitle: (page: any) => page.getByRole('heading', { name: 'Add User' }),
+        pageContainer: (page: any) => page.locator('#app'),
+        userRoleLabel: (page: any) => page.getByText('User Role'),
+        userRoleDropdown: (page: any) => page.locator('.oxd-select-text').first(),
+        userRoleIcon: (page: any) => page.locator('form i').first(),
+        employeeNameLabel: (page: any) => page.getByText('Employee Name'),
+        employeeNameDiv: (page: any) => page.locator('div').filter({ hasText: /^Employee Name$/ }).nth(2),
+        employeeSearchInput: (page: any) => page.getByRole('textbox', { name: 'Type for hints...' }),
+        statusLabel: (page: any) => page.getByText('Status'),
+        usernameLabel: (page: any) => page.getByText('Username'),
+        usernameInput: (page: any) => page.getByRole('textbox').nth(2),
+        passwordLabel: (page: any) => page.getByText('Password', { exact: true }),
+        passwordInput: (page: any) => page.getByRole('textbox').nth(3),
+        confirmPasswordLabel: (page: any) => page.getByText('Confirm Password'),
+        confirmPasswordInput: (page: any) => page.getByRole('textbox').nth(4),
+        passwordHelpText: (page: any) => page.getByText('For a strong password, please'),
+        passwordHelpFullText: (page: any) => page.locator('form'),
+        requiredText: (page: any) => page.getByText('* Required'),
+        cancelButton: (page: any) => page.getByRole('button', { name: 'Cancel' }),
+        saveButton: (page: any) => page.getByRole('button', { name: 'Save' })
+    },
+
+    editUserLocators: {
+        usernameColumnHeader: (page: any) => page.getByRole('columnheader', { name: 'Username ' }),
+        userRowByName: (page: any, rowName: string) => page.getByText(rowName),
+        userRowWithIcon: (page: any, rowName: string) => page.getByRole('row', { name: ` ${rowName}` }),
+        editButton: (page: any, rowName: string) => page.getByRole('row', { name: ` ${rowName}` }).getByRole('button').nth(1),
+        roleDropdown: (page: any) => page.locator('form i').first(),
+        roleOption: (page: any, roleName: string) => page.getByRole('option', { name: roleName }),
+        employeeSearchInput: (page: any) => page.getByRole('textbox', { name: 'Type for hints...' }),
+        statusDropdown: (page: any) => page.locator('form i').nth(1),
+        statusOption: (page: any, statusName: string) => page.getByRole('option', { name: statusName }),
+        usernameInput: (page: any) => page.getByRole('textbox').nth(2),
+        saveButton: (page: any) => page.getByRole('button', { name: 'Save' })
+    },
+
+    addNewUserPage: {
+        addButton: (page: any) => page.getByRole('button', { name: ' Add' }),
+        cancelButton: (page: any) => page.getByRole('button', { name: 'Cancel' }),
+        saveButton: (page: any) => page.getByRole('button', { name: 'Save' }),
+        appContainer: (page: any) => page.locator('#app'),
+        pageHeading: (page: any) => page.getByRole('heading', { name: 'Add User' }),
+        userRoleLabel: (page: any) => page.getByText('User Role'),
+        employeeNameLabel: (page: any) => page.getByText('Employee Name'),
+        statusLabel: (page: any) => page.getByText('Status'),
+        usernameLabel: (page: any) => page.getByText('Username'),
+        passwordLabel: (page: any) => page.getByText('Password', { exact: true }),
+        confirmPasswordLabel: (page: any) => page.getByText('Confirm Password'),
+        requiredLabel: (page: any) => page.getByText('* Required'),
+        userRoleDropdown: (page: any) => page.locator('.oxd-select-text').first(),
+        userRoleIcon: (page: any) => page.locator('form i').first(),
+        employeeNameDiv: (page: any) => page.locator('div').filter({ hasText: /^Employee Name$/ }).nth(2),
+        employeeSearchInput: (page: any) => page.getByRole('textbox', { name: 'Type for hints...' }),
+        statusDropdown: (page: any) => page.locator('div:nth-child(3) > .oxd-input-group > div:nth-child(2) > .oxd-select-wrapper > .oxd-select-text'),
+        usernameInput: (page: any) => page.getByRole('textbox').nth(2),
+        passwordInput: (page: any) => page.getByRole('textbox').nth(3),
+        confirmPasswordInput: (page: any) => page.getByRole('textbox').nth(4),
+        passwordHelpText: (page: any) => page.getByText('For a strong password, please'),
+        formContainer: (page: any) => page.locator('form')
+    },
+
+    searchLocators: {
+        resetButton: (page: any) => page.getByRole('button', { name: 'Reset' }),
+        searchButton: (page: any) => page.getByRole('button', { name: 'Search' }),
+        clearButton: (page: any) => page.getByRole('button', { name: '' }).first(),
+        usernameSearchInput: (page: any) => page.getByRole('textbox').nth(1),
+        employeeSearchInput: (page: any) => page.getByRole('textbox', { name: 'Type for hints...' }),
+        employeeOption: (page: any, employeeName: string) => page.getByRole('option', { name: employeeName }),
+        roleDropdown: (page: any) => page.locator('form i').first(),
+        roleOption: (page: any, roleName: string) => page.getByRole('option', { name: roleName }),
+        statusDropdown: (page: any) => page.locator('form i').nth(1),
+        statusOption: (page: any, statusName: string) => page.getByRole('option', { name: statusName }),
+        noRecordsFound: (page: any) => page.getByText('No Records Found'),
+        usernameInTable: (page: any, username: string) => page.getByText(username),
+        employeeInTable: (page: any, employeeName: string) => page.getByText(employeeName),
+        roleInTable: (page: any, roleName: string) => page.getByRole('cell', { name: roleName }),
+        statusInTable: (page: any, statusName: string) => page.getByText(statusName)
+    },
+    userValidationLocators: {
+        usernameText: (page: any, username: string) => page.getByText(username),
+        employeeNameText: (page: any, employeeName: string) => page.getByText(employeeName),
+        roleInTable: (page: any, role: string) => page.getByRole('table').getByText(role),
+        statusInTable: (page: any, status: string) => page.getByRole('table').getByText(status),
+        table: (page: any) => page.getByRole('table')
+    },
+    deleteUserLocators: {
+        userRowByName: (page: any, rowName: string) => page.getByText(rowName),
+        userRowWithIcon: (page: any, rowName: string) => page.getByRole('row', { name: ` ${rowName}` }),
+        deleteButton: (page: any, rowName: string) => page.getByRole('row', { name: ` ${rowName}` }).getByRole('button').first(),
+        confirmDeleteButton: (page: any) => page.getByRole('button', { name: ' Yes, Delete' })
+    },
 }
 export default locator;
