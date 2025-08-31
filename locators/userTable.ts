@@ -17,7 +17,9 @@ const locator = {
         saveButton: (page: any) => page.getByRole('button', { name: 'Save' }),
         addButton: (page: any) => page.getByRole('button', { name: ' Add' }),
         usernameValidation: (page: any) => page.getByRole('textbox').nth(2),
-        statusValidation: (page: any) => page.getByText('Enabled')
+        statusValidation: (page: any) => page.getByText('Enabled'),
+        autoCompleteOption: (page: any, optionText: string) => page.getByRole('option', { name: optionText }),
+        waitForRoleOption: (page: any) => page.waitForSelector('[role="option"]')
     },
     systemUsersLocators: {
         adminLink: (page: any) => page.getByRole('link', { name: 'Admin' }),
@@ -110,13 +112,13 @@ const locator = {
         statusOption: (page: any, statusName: string) => page.getByRole('option', { name: statusName }),
         noRecordsFound: (page: any) => page.getByText('No Records Found'),
         usernameInTable: (page: any, username: string) => page.getByText(username),
-        employeeInTable: (page: any, employeeName: string) => page.getByText(employeeName),
+        employeeInTable: (page: any, employeeName: string) =>  page.locator('.oxd-table-row').filter({ hasText: employeeName }),
         roleInTable: (page: any, roleName: string) => page.getByRole('cell', { name: roleName }),
         statusInTable: (page: any, statusName: string) => page.getByText(statusName)
     },
     userValidationLocators: {
         usernameText: (page: any, username: string) => page.getByText(username),
-        employeeNameText: (page: any, employeeName: string) => page.getByText(employeeName),
+        employeeNameText: (page: any, employeeName: string) =>  page.locator('.oxd-table-row').filter({ hasText: employeeName }),
         roleInTable: (page: any, role: string) => page.getByRole('table').getByText(role),
         statusInTable: (page: any, status: string) => page.getByRole('table').getByText(status),
         table: (page: any) => page.getByRole('table')

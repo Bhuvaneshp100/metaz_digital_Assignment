@@ -12,6 +12,8 @@ const userTable = {
     await expect(locator.addUser.selectedRoleText(Page, data.role)).toBeVisible();
     await locator.addUser.employeeSearchInput(Page).click();
     await locator.addUser.employeeSearchInput(Page).fill(employeeName.substring(0, 6));
+    await locator.addUser.autoCompleteOption(Page, employeeName).waitFor({ state: 'visible' });
+    await locator.addUser.waitForRoleOption(Page);
     await locator.addUser.employeeOption(Page, employeeName).click();
     await locator.addUser.statusDropdown(Page).click();
     await locator.addUser.statusOption(Page, data.selectoption).click();
@@ -27,6 +29,7 @@ const userTable = {
     await locator.addUser.confirmPasswordInput(Page).press('Tab');
     await locator.addUser.weakPasswordText(Page).click();
     await locator.addUser.saveButton(Page).click();
+    await Page.waitForResponse('**/admin/viewSystemUsers')
   },
   async editUser(page: Page, rowName: string, newEmployee: string, newUsername: string) {
     await locator.editUserLocators.usernameColumnHeader(page).click();
@@ -43,6 +46,7 @@ const userTable = {
     await locator.editUserLocators.usernameInput(page).click();
     await locator.editUserLocators.usernameInput(page).fill(newUsername);
     await locator.editUserLocators.saveButton(page).click();
+    await page.waitForResponse('**/admin/viewSystemUsers')
   },
 
   async validateViewSystemUsersPage(Page: Page): Promise<void> {
@@ -108,10 +112,9 @@ const userTable = {
     validationCriteria: { expectedUsername?: string; expectedEmployee?: string; expectedRole?: string; expectedStatus?: string; } = {}): Promise<void> {
     const { username, employeeName, role, status } = searchCriteria;
     const { expectedUsername, expectedEmployee, expectedRole, expectedStatus } = validationCriteria;
-
     await locator.searchLocators.resetButton(page).click();
-
     if (username) {
+      await locator.searchLocators.usernameSearchInput(page).waitFor({ state: 'visible' });
       await locator.searchLocators.usernameSearchInput(page).click();
       await locator.searchLocators.usernameSearchInput(page).fill(username);
     }
