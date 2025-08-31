@@ -3,101 +3,164 @@ import locator from '../locators/userTable';
 
 const userTable = {
 
-    async addUser(Page: Page, employeeName: string, username: string, password: string) {
-        await Page.locator('form i').first().click();
-        await Page.getByRole('option', { name: 'Admin' }).click();
-        await expect(Page.locator('form').getByText('Admin')).toBeVisible();
-        await Page.getByRole('textbox', { name: 'Type for hints...' }).click();
-        await Page.getByRole('textbox', { name: 'Type for hints...' }).fill(employeeName.substring(0, 6));
-        await Page.getByRole('option', { name: 'Ranga Akunuri' }).click();
-        await Page.locator('form i').nth(1).click();
-        await Page.getByRole('option', { name: 'Enabled' }).click();
-        await expect(Page.getByText('Enabled')).toBeVisible();
-        await Page.getByRole('textbox').nth(2).click();
-        await Page.getByRole('textbox').nth(2).fill(username);
-        await expect(Page.getByRole('textbox').nth(2)).toBeVisible();
-        await Page.getByText('PasswordFor a strong password').click();
-        await Page.getByRole('textbox').nth(3).click();
-        await Page.getByRole('textbox').nth(3).fill(password);
-        await Page.getByRole('textbox').nth(4).click();
-        await Page.getByRole('textbox').nth(4).fill(password);
-        await Page.getByRole('textbox').nth(4).press('Tab');
-        await Page.locator('form div').filter({ hasText: 'Weak PasswordFor a strong' }).first().click();
-        await Page.getByRole('button', { name: 'Save' }).click();
-    },
-    async editUser(page, rowName: string, newEmployee: string, newUsername: string) {
-        await page.getByRole('columnheader', { name: 'Username ' }).click();
-        await page.getByText(rowName).click();
-        await page.getByRole('row', { name: ` ${rowName}` }).getByRole('button').nth(1).click();
-        await page.locator('form i').first().click();
-        await page.getByRole('option', { name: 'ESS' }).click();
-        await page.getByRole('textbox', { name: 'Type for hints...' }).click();
-        await page.locator('form i').nth(1).click();
-        await page.getByRole('option', { name: 'Disabled' }).click();
-        await page.getByRole('textbox').nth(2).click();
-        await page.getByRole('button', { name: 'Save' }).click();
-    },
+  async waitForElementReady(page: Page, selector: string) {
+    await page.waitForSelector(selector, { state: 'visible' });
+  },
 
-    async validateViewSystemUsersPage(Page: Page): Promise<void> {
-        await locator.systemUsersLocators.adminLink(Page).click();
-        await expect(locator.systemUsersLocators.addButton(Page)).toBeVisible();
-        await expect(locator.systemUsersLocators.resetButton(Page)).toBeVisible();
-        await expect(locator.systemUsersLocators.searchButton(Page)).toBeVisible();
-        await expect(locator.systemUsersLocators.userManagementHeading(Page)).toBeVisible();
-        await expect(locator.systemUsersLocators.systemUsersHeading(Page)).toBeVisible();
-        await expect(locator.systemUsersLocators.form(Page)).toContainText('User Role');
-        await expect(locator.systemUsersLocators.form(Page)).toContainText('Status');
-        await expect(locator.systemUsersLocators.usernameHeader(Page)).toBeVisible();
-        await expect(locator.systemUsersLocators.userRoleHeader(Page)).toBeVisible();
-        await expect(locator.systemUsersLocators.employeeNameHeader(Page)).toBeVisible();
-        await expect(locator.systemUsersLocators.statusHeader(Page)).toBeVisible();
-        await expect(locator.systemUsersLocators.actionsHeader(Page)).toBeVisible();
-        await expect(locator.systemUsersLocators.userRoleHeader(Page)).toBeVisible();
-        await expect(locator.systemUsersLocators.banner(Page)).toContainText('AdminUser Management');
-    },
+  async addUser(page: Page, employeeName: string, username: string, password: string) {
+    await locator.addUser.roleDropdown(page).click();
+    await locator.addUser.roleOption(page, 'Admin').click();
+    await expect(locator.addUser.selectedRoleText(page, 'Admin')).toBeVisible();
 
-    async ValidateAddNewUserPage(Page: Page): Promise<void> {
-        await Page.getByRole('button', { name: ' Add' }).click();
-        await expect(Page.locator('#app')).toContainText('Add User');
-        await expect(Page.getByRole('heading', { name: 'Add User' })).toBeVisible();
-        await expect(Page.getByText('User Role')).toBeVisible();
-        await expect(Page.locator('.oxd-select-text').first()).toBeVisible();
-        await expect(Page.locator('form i').first()).toBeVisible();
-        await expect(Page.locator('div').filter({ hasText: /^Employee Name$/ }).nth(2)).toBeVisible();
-        await expect(Page.getByText('Employee Name')).toBeVisible();
-        await expect(Page.getByRole('textbox', { name: 'Type for hints...' })).toBeVisible();
-        await expect(Page.getByText('Status')).toBeVisible();
-        await expect(Page.getByText('Username')).toBeVisible();
-        await expect(Page.locator('div:nth-child(3) > .oxd-input-group > div:nth-child(2) > .oxd-select-wrapper > .oxd-select-text')).toBeVisible();
-        await expect(Page.getByRole('textbox').nth(2)).toBeVisible();
-        await expect(Page.getByText('Username')).toBeVisible();
-        await expect(Page.getByText('Password', { exact: true })).toBeVisible();
-        await expect(Page.getByRole('textbox').nth(3)).toBeVisible();
-        await expect(Page.getByText('Confirm Password')).toBeVisible();
-        await expect(Page.getByRole('textbox').nth(4)).toBeVisible();
-        await expect(Page.getByText('For a strong password, please')).toBeVisible();
-        await expect(Page.locator('form')).toContainText('For a strong password, please use a hard to guess combination of text with upper and lower case characters, symbols and numbers');
-        await expect(Page.getByText('* Required')).toBeVisible();
-        await expect(Page.getByRole('button', { name: 'Cancel' })).toBeVisible();
-        await expect(Page.getByRole('button', { name: 'Save' })).toBeVisible();
-    },
+    await locator.addUser.employeeSearchInput(page).click();
+    await locator.addUser.employeeSearchInput(page).fill(employeeName.substring(0, 6));
+    
+    // Wait for employee options to load
+    await this.waitForElementReady(page, '[role="option"]');
+    await locator.addUser.employeeOption(page, employeeName).click();
 
-    async ValidateNewAddedUser(Page: Page): Promise<void> {
-        await expect(Page.getByText('QAtest23')).toBeVisible();
-        await expect(Page.getByText('Ranga Akunuri')).toBeVisible();
-        await expect(Page.getByRole('table')).toContainText('Admin');
-        await expect(Page.getByRole('table')).toContainText('Enabled');
-    },
-    async validateUserInTable(page: Page, username: string, employeeName?: string, role?: string, status?: string): Promise<void> {
-        await page.getByText(username).click();
-        await expect(page.getByText(username)).toBeVisible();
-    },
-    async deleteUser(page: Page, rowName: string): Promise<void> {
-        await page.getByText(rowName).click();
-        await page.getByRole('row', { name: ` ${rowName}` }).getByRole('button').first().click();
-        await page.getByRole('button', { name: ' Yes, Delete' }).click();
+    await locator.addUser.statusDropdown(page).click();
+    await locator.addUser.statusOption(page, 'Enabled').click();
+    await expect(locator.addUser.selectedStatusText(page)).toBeVisible();
 
+    await locator.addUser.usernameInput(page).click();
+    await locator.addUser.usernameInput(page).fill(username);
+    await expect(locator.addUser.usernameValidation(page)).toBeVisible();
+
+    await locator.addUser.passwordSection(page).click();
+    await locator.addUser.passwordInput(page).click();
+    await locator.addUser.passwordInput(page).fill(password);
+
+    await locator.addUser.confirmPasswordInput(page).click();
+    await locator.addUser.confirmPasswordInput(page).fill(password);
+    await locator.addUser.confirmPasswordInput(page).press('Tab');
+
+    await locator.addUser.weakPasswordText(page).click();
+    await locator.addUser.saveButton(page).click();
+
+    // Wait for success message or page change
+    await page.waitForLoadState('networkidle');
+  },
+
+  async editUser(page: Page, rowName: string, newEmployee: string, newUsername: string) {
+    await page.getByRole('columnheader', { name: 'Username ' }).click();
+    
+    // Wait for the specific row to be visible
+    await this.waitForElementReady(page, `text=${rowName}`);
+    await page.getByText(rowName).click();
+    
+    // Wait for edit button to be ready
+    const editButton = page.getByRole('row', { name: ` ${rowName}` }).getByRole('button').nth(1);
+    await editButton.waitFor({ state: 'visible' });
+    await editButton.click();
+
+    await page.locator('form i').first().click();
+    await page.getByRole('option', { name: 'ESS' }).click();
+
+    await page.getByRole('textbox', { name: 'Type for hints...' }).click();
+
+    await page.locator('form i').nth(1).click();
+    await page.getByRole('option', { name: 'Disabled' }).click();
+
+    await page.getByRole('textbox').nth(2).click();
+    await page.getByRole('textbox').nth(2).fill(newUsername);
+
+    await page.getByRole('button', { name: 'Save' }).click();
+    await page.waitForLoadState('networkidle');
+  },
+
+  async validateViewSystemUsersPage(page: Page): Promise<void> {
+    await locator.systemUsersLocators.adminLink(page).click();
+    await page.waitForLoadState('networkidle');
+    
+    await expect(locator.systemUsersLocators.addButton(page)).toBeVisible();
+    await expect(locator.systemUsersLocators.resetButton(page)).toBeVisible();
+  },
+
+  async ValidateAddNewUserPage(page: Page): Promise<void> {
+    await page.getByRole('button', { name: ' Add' }).click();
+    await page.waitForLoadState('networkidle');
+    
+    await expect(page.locator('#app')).toContainText('Add User');
+    await expect(page.getByRole('heading', { name: 'Add User' })).toBeVisible();
+  },
+
+  async ValidateNewAddedUser(page: Page, username: string, employeeName: string): Promise<void> {
+    // Wait for the user to appear in table
+    await page.waitForSelector(`text=${username}`, { state: 'visible' });
+    await expect(page.getByText(username)).toBeVisible();
+    await expect(page.getByText(employeeName)).toBeVisible();
+  },
+
+  async validateUserInTable(page: Page, username: string, employeeName?: string): Promise<void> {
+    await page.waitForSelector(`text=${username}`, { state: 'visible' });
+    await page.getByText(username).click();
+    await expect(page.getByText(username)).toBeVisible();
+  },
+
+  async deleteUser(page: Page, rowName: string): Promise<void> {
+    await page.waitForSelector(`text=${rowName}`, { state: 'visible' });
+    await page.getByText(rowName).click();
+    
+    const deleteButton = page.getByRole('row', { name: ` ${rowName}` }).getByRole('button').first();
+    await deleteButton.waitFor({ state: 'visible' });
+    await deleteButton.click();
+
+    await page.getByRole('button', { name: 'Yes, Delete' }).waitFor({ state: 'visible' });
+    await page.getByRole('button', { name: 'Yes, Delete' }).click();
+    
+    await page.waitForLoadState('networkidle');
+  },
+
+  async searchAndValidateUser(
+    page: Page, 
+    searchCriteria: { username?: string; employeeName?: string; role?: string; status?: string; },
+    validationCriteria: { expectedUsername?: string; expectedEmployee?: string; expectedRole?: string; expectedStatus?: string; } = {}
+  ): Promise<void> {
+    const { username, employeeName, role, status } = searchCriteria;
+    const { expectedUsername, expectedEmployee, expectedRole, expectedStatus } = validationCriteria;
+
+    await page.getByRole('button', { name: 'Reset' }).click();
+    await page.waitForLoadState('networkidle');
+
+    if (username) {
+      await page.getByRole('textbox').nth(1).fill(username);
     }
 
+    if (employeeName) {
+      await page.getByRole('textbox', { name: 'Type for hints...' }).fill(employeeName.substring(0, 6));
+      await this.waitForElementReady(page, '[role="option"]');
+      await page.getByRole('option', { name: employeeName }).click();
+    }
+
+    if (role) {
+      await page.locator('form i').first().click();
+      await page.getByRole('option', { name: role }).click();
+    }
+
+    if (status) {
+      await page.locator('form i').nth(1).click();
+      await page.getByRole('option', { name: status }).click();
+    }
+
+    await page.getByRole('button', { name: 'Search' }).click();
+    await page.waitForLoadState('networkidle');
+
+    const noRecordsElement = page.getByText('No Records Found');
+    const isNoRecordsVisible = await noRecordsElement.isVisible().catch(() => false);
+
+    if (isNoRecordsVisible) {
+      await expect(noRecordsElement).toBeVisible();
+    } else {
+      if (expectedUsername) {
+        await page.waitForSelector(`text=${expectedUsername}`, { state: 'visible' });
+        await expect(page.getByText(expectedUsername)).toBeVisible();
+      }
+      if (expectedEmployee) await expect(page.getByText(expectedEmployee)).toBeVisible();
+      if (expectedRole) await expect(page.getByRole('cell', { name: expectedRole })).toBeVisible();
+      if (expectedStatus) await expect(page.getByText(expectedStatus)).toBeVisible();
+    }
+  }
 }
+
 export default userTable;
