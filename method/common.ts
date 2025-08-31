@@ -6,8 +6,6 @@ const method = {
   async login(page: Page, username?: string, password?: string): Promise<void> {
     const user = username ?? process.env.USER_NAME!;
     const pass = password ?? process.env.USER_PASSWORD!;
-    
-    await page.goto('/');
     await locators.login.username(page).fill(user);
     await locators.login.password(page).fill(pass);
     await locators.login.loginButton(page).click();
@@ -17,25 +15,7 @@ const method = {
 
 
 
-//  async addUser(page: Page, employeeName: string, username: string, password: string) {
-//    await expect(page).toHaveURL(/.*dashboard/);
-//   await page.locator(locators.addUser.adminLink).click();
-//   await expect(page.locator(locators.addUser.addButton)).toBeVisible();
-//   await page.locator(locators.addUser.addButton).click();
-//   await page.locator(locators.addUser.roleDropdown).click();
-//   await page.locator(locators.addUser.roleOptionAdmin).click();
-//   await page.locator(locators.addUser.employeeSearchInput).fill(employeeName.substring(0, 3));
-//   await page.locator(locators.addUser.employeeSelect(employeeName)).click();
-//   await page.locator(locators.addUser.statusDropdown).click();
-//   await page.locator(locators.addUser.statusOptionEnabled).click();
-//   await page.locator(locators.addUser.usernameInput).fill(username);
-//   await page.locator(locators.addUser.passwordInput).fill(password);
-//   await page.locator(locators.addUser.confirmPasswordInput).fill(password);
- 
-//   await page.locator(locators.addUser.saveButton).click();
-//   // await expect(page.locator(locators.addUser.userTable)).toContainText(username);
 
-//  },
 
 // async editUser(page, rowName: string, newEmployee: string, newUsername: string) {
 //   await page.locator(locators.editUser.tableContainer).click();
