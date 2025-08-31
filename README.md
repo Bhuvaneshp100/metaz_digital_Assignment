@@ -51,8 +51,8 @@ npx playwright test login.spec.ts
 ```
 Add .env in local run 
 ```bash
-USER_NAME=Admin
-USER_PASSWORD=admin123
+USER_NAME=
+USER_PASSWORD=
 ```
 
 ## Manual Workflow Trigger: 
