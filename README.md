@@ -1,5 +1,5 @@
-# metaz_digital_Assignment
-Metaz Digital Assignment - Playwright Automation Framework
+# digital_Assignment
+Metaz Digital Assignment - Playwright Automation Framework test
 
 ## Introduction
 
